@@ -13,29 +13,55 @@
   Output - [{ category: 'Food', totalSpent: 10 }] // Can have multiple categories, only one example is mentioned here
 */
 
-function calculateTotalSpentByCategory(transactions) {
-  let cat = new Set();
+// solution one
+// function calculateTotalSpentByCategory(transactions) {
+//   let cat = new Set();
+//   for(let i = 0; i < transactions.length; i++){
+//     cat.add(transactions[i]['category']);
+//   }
+  
+//   let catArr = Array.from(cat);
+//   let ans = [];
+
+//   for(let i = 0; i < catArr.length; i++){
+//     ans.push({category: catArr[i], totalSpent: 0});
+//   }
+  
+
+//   for(let i = 0; i < catArr.length; i++){
+//     for(let j = 0; j < transactions.length; j++){
+//       if(catArr[i] == transactions[j]['category']){
+//         ans[i]['totalSpent'] += transactions[j]['price'];
+//       }
+//     }
+//   }
+
+//   return ans;
+// }
+
+
+// solution two
+function calculateTotalSpentByCategory(transactions){
+  const categoryMap = {};
+
   for(let i = 0; i < transactions.length; i++){
-    cat.add(transactions[i]['category']);
-  }
-  
-  let catArr = Array.from(cat);
-  let ans = [];
+    const {category, price} = transactions[i];
 
-  for(let i = 0; i < catArr.length; i++){
-    ans.push({category: catArr[i], totalSpent: 0});
-  }
-  
-
-  for(let i = 0; i < catArr.length; i++){
-    for(let j = 0; j < transactions.length; j++){
-      if(catArr[i] == transactions[j]['category']){
-        ans[i]['totalSpent'] += transactions[j]['price'];
-      }
+    if(!categoryMap[category]){
+      categoryMap[category] = price;
+    }
+    else{
+      categoryMap[category] += price;
     }
   }
 
-  return ans;
+  // convert map into array of obejects
+  const result = Object.keys(categoryMap).map(a => ({
+    category: a,
+    totalSpent: categoryMap[a],
+  }));
+
+  return result
 }
 
 module.exports = calculateTotalSpentByCategory;
